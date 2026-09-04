@@ -1,40 +1,32 @@
 class Solution {
 public:
-    static bool comp(const pair<int,int> &a, const pair<int,int> &b){
-        return a.first < b.first;
-    }
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        vector<pair<int,int>> arr;
+        vector<pair<int,int>> startEndArr;
         for(auto it: intervals){
-            arr.push_back({it[0], it[1]}); // start end 
+            startEndArr.push_back({it[0], it[1]});
         }
 
-        sort(arr.begin(), arr.end(), comp);
+        sort(startEndArr.begin(), startEndArr.end());
 
-        int s = arr[0].first;
-        int e = arr[0].second;
-
+        auto [prevStart, prevEnd] = startEndArr[0];
         vector<vector<int>> ans;
 
-        for(int i=1;i<arr.size();i++){
+        for(int i=1;i<startEndArr.size();i++){
+            // 8 ---- 10
+            //            15 ------ 18
+            auto [currStart, currEnd] = startEndArr[i];
 
-            // if this interval start before previous interval end we can merge it 
-            int s2 = arr[i].first;
-            int e2 = arr[i].second;
-            if(s2 <= e) {
-                // can merge 
-                s = min(s, s2);
-                e = max(e,e2);
-            }else{
-                ans.push_back({s,e});
-                s = s2;
-                e = e2;
-                // can not merge 
+            if(prevEnd >= currStart){
+                // we can merger currMeeting is start before previous unterval end 
+                prevEnd = max(prevEnd, currEnd);
+            }else {
+                ans.push_back({prevStart, prevEnd}); // {1,6}, {8,10}
+                prevStart = currStart; // 15
+                prevEnd = currEnd; // 16
             }
-
         }
+        ans.push_back({prevStart, prevEnd});
 
-        ans.push_back({s,e});
         return ans;
         
     }
