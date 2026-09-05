@@ -19,7 +19,6 @@ public:
                 j++;
             }
             k++;
-            cout<<prev<<" "<<curr<<endl;
         }
 
         return odd ? curr : (prev + curr)/2;
