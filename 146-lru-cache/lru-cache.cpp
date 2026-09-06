@@ -1,43 +1,43 @@
 class LRUCache {
 public:
-
-    class DoublyLinkList{
+    class DoublyListList {
         public:
-        int key, vale;
-        DoublyLinkList *prev, *next;
+        int key, value;
+        DoublyListList *prev, *next;
 
-        DoublyLinkList(int k, int v){
-            key = k, vale = v;
+        DoublyListList(int k, int v){
+            key = k;
+            value = v;
             prev = next = nullptr;
         }
+
     };
+    int limit = 0;
+    DoublyListList *head = new DoublyListList(-1,-1);
+    DoublyListList* tail = new DoublyListList(-1,-1);
 
-    int limit;
-    DoublyLinkList* head = new DoublyLinkList(-1,-1);
-    DoublyLinkList* tail = new DoublyLinkList(-1,-1);
-    unordered_map<int,DoublyLinkList*> map;
+    unordered_map<int, DoublyListList*> map;
 
-    void addNode(DoublyLinkList* newNode){
-        // prev/head  newNode  next 
-        DoublyLinkList* prev = head;
-        DoublyLinkList* next = head->next;
+    void addNode(DoublyListList* node){
+        // head node tail/next 
+        DoublyListList* prev = head;
+        DoublyListList* next = head->next;
 
-        prev->next = newNode;
-        newNode->prev = prev;
-        newNode->next = next;
-        next->prev = newNode;
+        prev->next = node;
+        node->prev = prev;
+        node->next = next;
+        next->prev = node;
 
     }
 
-    void removeNode(DoublyLinkList * node){
-        // prev nodeForDeletion next
-        DoublyLinkList* prev = node->prev;
-        DoublyLinkList* next = node->next;
-
+    void remove(DoublyListList* node){
+        // prev node next
+        DoublyListList* prev = node->prev;
+        DoublyListList* next = node->next;
         prev->next = next;
         next->prev = prev;
     }
-     // head -> tail
+
     LRUCache(int capacity) {
         limit = capacity;
         head->next = tail;
@@ -45,33 +45,34 @@ public:
     }
     
     int get(int key) {
-        if(map.contains(key) == false) return -1;
-        int ans = map[key]->vale;
-        removeNode(map[key]);
+        if(!map.contains(key)) return -1;
+
+        DoublyListList *node = new DoublyListList(key, map[key]->value);
+        remove(map[key]);
         map.erase(key);
 
-        DoublyLinkList *newNode = new DoublyLinkList(key,ans);
-        addNode(newNode);
-        map[key]= newNode;
+        addNode(node);
+        map[key] = node;
 
-        return ans;
+        return node->value;
         
     }
     
     void put(int key, int value) {
         if(map.contains(key)){
-            removeNode(map[key]);
+            remove(map[key]);
             map.erase(key);
         }else if(map.size() == limit){
             map.erase(tail->prev->key);
-            removeNode(tail->prev);
+            remove(tail->prev);
         }
 
-        DoublyLinkList *newNode = new DoublyLinkList(key,value);
-        addNode(newNode);
-        map[key]= newNode;
-        
+        DoublyListList* newNode = new DoublyListList(key,value);
+            addNode(newNode);
+            map[key] = newNode;
     }
+        
+    
 };
 
 /**
