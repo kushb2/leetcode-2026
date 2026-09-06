@@ -10,40 +10,33 @@
  */
 class Solution {
 public:
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode* curr = new ListNode(0);
-        ListNode* list3 = curr;
-        while(list1 != NULL || list2 != NULL) {
-            int x = list1 != NULL ? list1->val : INT_MAX;
-            int y = list2 != NULL ? list2->val : INT_MAX;
-
-            if(x < y) {
-                list3->next = list1;
-                list1 = list1 != NULL ? list1->next : NULL;
-                
-            }else{
-                list3->next = list2;
-                list2 = list2 != NULL ? list2->next : NULL;
-            }
-            
-            list3 = list3->next;
-
+    struct Compare{
+        static bool operator()(const ListNode* a, const ListNode *b){
+            return a->val > b->val;
         }
-        return curr->next;
-        
-    }
+    };
+    
 
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         if(lists.size() == 0) return nullptr;
         if(lists.size() == 1) return lists[0];
+        ListNode* l3 = new ListNode(0);
+        ListNode* head = l3;
 
-        ListNode* l1 = lists[0];
-        for(int i=1;i<lists.size();i++){
-            ListNode* l2 = lists[i];
-            l1 = mergeTwoLists(l1,l2);
+        priority_queue<ListNode*, vector<ListNode*>, Compare> q;
+
+        for(auto it: lists){
+            if(it != nullptr) q.push(it);
         }
 
-        return l1;
-        
+        while(!q.empty()){
+            ListNode* smallest = q.top(); q.pop();
+            l3->next = smallest;
+            l3 = l3->next;
+            if(smallest->next != nullptr) q.push(smallest->next);
+        }
+
+        return head->next;
+
     }
 };
