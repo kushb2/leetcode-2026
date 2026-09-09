@@ -3,16 +3,15 @@ public:
     int findContentChildren(vector<int>& g, vector<int>& s) {
         sort(g.begin(), g.end());
         sort(s.begin(), s.end());
-        int count = 0;
-        int j=0;
-        for(auto it: g){
-            while(j < s.size() && it > s[j]){
-                j++;
+        int greedIndex=0, cookieIndex = 0;
+        int greedSize = g.size(), cookieSize = s.size();
+        while(greedIndex < greedSize && cookieIndex < cookieSize){
+            if(g[greedIndex] <= s[cookieIndex]){
+                greedIndex++;
             }
-            if(j == s.size()) break;
-            count++;
-            j++;
+            cookieIndex++;
         }
-    return count;
+        return greedIndex;
+        
     }
 };
