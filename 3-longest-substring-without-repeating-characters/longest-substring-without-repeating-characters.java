@@ -6,13 +6,11 @@ class Solution {
         for(int right=0;right < n ;right++){
             // add element 
             char curr = s.charAt(right);
-            map.put(curr, map.getOrDefault(curr, 0) + 1);
 
-            while(map.get(curr) > 1){// duplicate instance 
-                char rightChar = s.charAt(left);
-                map.put(rightChar, map.get(rightChar) - 1);
-                left++;
+            if(map.containsKey(curr)){// ccurr already present 
+                left = Math.max(map.get(curr)+1, left);
             }
+            map.put(curr, right);
             maxLen = Math.max(maxLen, right - left + 1);
 
         }
