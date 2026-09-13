@@ -9,33 +9,29 @@
  * }
  */
 class Solution {
-
-    public ListNode merge(ListNode l1, ListNode l2){
-        ListNode dummy = new ListNode();
-        ListNode l3 = dummy;
-        while(l1 != null || l2 != null){
-            int a = l1 != null ? l1.val : Integer.MAX_VALUE;
-            int b = l2 != null ? l2.val : Integer.MAX_VALUE;
-
-            if(a < b){
-                l3.next = l1;
-                l1 = l1 != null ? l1.next : null;
-            }else{
-                l3.next = l2;
-                l2 = l2 != null ? l2.next : null;
-            }
-            
-            l3 = l3.next;
-        }
-        return dummy.next;
-
-    }
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode l3 = null;
-        for(ListNode it: lists){
-            l3 = merge(l3, it);
-        }
-        return l3;
+        Queue<ListNode> q = new PriorityQueue<>(
+            (l1, l2) -> l1.val - l2.val);
+
+            for(ListNode l1: lists){
+                if(l1 != null){
+                    q.offer(l1);
+                }
+            }
+
+            ListNode dummy = new ListNode();
+            ListNode l3 = dummy;
+
+            while(!q.isEmpty()){
+                ListNode curr = q.poll();
+                l3.next = curr;
+                l3 = l3.next;
+                if(curr.next != null){
+                    q.offer(curr.next);
+                }
+            }
+
         
+        return dummy.next;
     }
 }
