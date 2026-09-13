@@ -11,7 +11,7 @@ class Solution {
         map.put(']', '[');
         map.put('}', '{');
 
-        Stack<Character> st = new Stack<>();
+        Deque<Character> st = new ArrayDeque<>();
 
         for(char c: s.toCharArray()){
             if(map.containsKey(c)){// exit brac is there 
@@ -21,11 +21,11 @@ class Solution {
                 if(top != map.get(c)) return false;
 
             }else{
-                st.add(c);
+                st.push(c);
             }
             
         }
-        return st.isEmpty() ? true : false;
+        return st.isEmpty();
 
     }
 }
