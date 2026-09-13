@@ -6,18 +6,18 @@ class Solution {
             keyToFreq.put(it , keyToFreq.getOrDefault(it, 0) + 1);
         }
 
-        Queue<Integer> heap = new PriorityQueue<>(
-            (n1,n2) -> keyToFreq.get(n1) - keyToFreq.get(n2));
+        Queue<int[]> heap = new PriorityQueue<>(
+            (n1,n2) -> n1[1] - n2[1]);
 
 
-        for(int it: keyToFreq.keySet()){
-            heap.add(it);
+        for(var it: keyToFreq.entrySet()){
+            heap.add(new int[] { it.getKey(), it.getValue()});
             if(heap.size() > k) heap.poll();
         }
 
         int[] ans = new int[k];
         for(int i=k-1;i>=0;i--){
-            ans[i] = heap.poll();
+            ans[i] = heap.poll()[0];
         }
 
         return ans;
