@@ -11,7 +11,7 @@
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         Queue<ListNode> q = new PriorityQueue<>(
-            (l1, l2) -> l1.val - l2.val);
+            (l1,l2) -> Integer.compare(l1.val , l2.val));
 
             for(ListNode l1: lists){
                 if(l1 != null){
