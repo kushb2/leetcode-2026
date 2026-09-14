@@ -22,10 +22,15 @@ class Solution {
         boolean leftToRight = true;
        while(!q.isEmpty()){
         int n = q.size();
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new LinkedList<>();
         for(int i=0;i<n;i++){
             TreeNode curr = q.poll();
-            list.add(curr.val);
+            if(leftToRight) {
+                list.addLast(curr.val);
+            }else{
+                list.addFirst(curr.val);
+            }
+            
 
             if(curr.left != null){
                 q.add(curr.left);
@@ -33,10 +38,9 @@ class Solution {
             if(curr.right != null){
                 q.add(curr.right);
             }
+            
         }
-        if(!leftToRight) {
-            Collections.reverse(list);
-        }
+        
         leftToRight = !leftToRight;
         ans.add(list); 
         
@@ -46,4 +50,6 @@ class Solution {
 
         
     }
+    //  15 7 
+    // 3 20 9 15 7 
 }
