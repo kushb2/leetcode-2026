@@ -35,7 +35,7 @@ class Solution {
             }
         }
         if(!leftToRight) {
-            list = list.reversed();
+            Collections.reverse(list);
         }
         leftToRight = !leftToRight;
         ans.add(list); 
