@@ -1,43 +1,44 @@
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         int n = nums.length;
-        int[] ans = new int[n-k+1];// 8 - 3 => 5
-        int index = 0;
-
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> b[1] - a[1]);
-
         int left = 0, right = 0;
+        int index = 0;
+        int[] ans = new int[n-k+1];
+        Deque<int[]> dq = new ArrayDeque<>();
+
         while(right < k){
             int currValue = nums[right];
+            while(!dq.isEmpty() && dq.getLast()[1] < currValue){
+                dq.pollLast();
+            } 
 
-            while(right < k && !pq.isEmpty() && pq.peek()[1] < currValue){
-                pq.poll();
-            }
-
-            pq.offer(new int[] { right, currValue}); // index and current value
+            dq.addLast(new int[] { right , currValue });// index value 
             right++;
         }
-        ans[index++] = pq.peek()[1];
 
+        ans[index++] = dq.peekFirst()[1];// 3
 
         while(right < n){
-            // remove element from left 
-            while(right < n && !pq.isEmpty() && pq.peek()[0] <= left){
-                pq.poll(); // remove expire element 
-            }
             int currValue = nums[right];
 
-             while(right < n && !pq.isEmpty() && pq.peek()[1] < currValue){
-                pq.poll();
+            while(!dq.isEmpty() && dq.getFirst()[0] <= left){ // 3 -1 -3
+                dq.pollFirst();
             }
-            pq.offer(new int[] { right, currValue});
-            ans[index++] = pq.peek()[1];
-            left++;
+
+            while(!dq.isEmpty() && dq.getLast()[1] < currValue){
+                dq.pollLast();
+            }
+            dq.addLast(new int[] { right , currValue });// index value 
+            ans[index++] = dq.peekFirst()[1];
             right++;
+            left++;
+
+
 
         }
-
         return ans;
+
+
 
 
         
