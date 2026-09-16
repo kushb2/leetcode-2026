@@ -1,40 +1,45 @@
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
-        Deque<Integer> dq = new ArrayDeque<>();
         int n = nums.length;
-        int left = 0, right = 0;
+        int[] ans = new int[n-k+1];// 8 - 3 => 5
+        int index = 0;
 
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> b[1] - a[1]);
+
+        int left = 0, right = 0;
         while(right < k){
-            while(!dq.isEmpty() && nums[dq.peekLast()] < nums[right]){
-                dq.pollLast(); // if existing number is lees 
-                // then nums[right] they will never be part of ans 
+            int currValue = nums[right];
+
+            while(right < k && !pq.isEmpty() && pq.peek()[1] < currValue){
+                pq.poll();
             }
-            dq.addLast(right);
+
+            pq.offer(new int[] { right, currValue}); // index and current value
             right++;
         }
+        ans[index++] = pq.peek()[1];
 
-        ArrayList<Integer> ans = new ArrayList<>();
 
         while(right < n){
-            // answer for current window
-            ans.add(nums[dq.peekFirst()]);
+            // remove element from left 
+            while(right < n && !pq.isEmpty() && pq.peek()[0] <= left){
+                pq.poll(); // remove expire element 
+            }
+            int currValue = nums[right];
+
+             while(right < n && !pq.isEmpty() && pq.peek()[1] < currValue){
+                pq.poll();
+            }
+            pq.offer(new int[] { right, currValue});
+            ans[index++] = pq.peek()[1];
             left++;
-            // remove exired element 
-            while(!dq.isEmpty() && dq.peekFirst() < left){
-                dq.pollFirst();
-            }
-
-            while(!dq.isEmpty() && nums[dq.peekLast()] < nums[right]){
-                dq.pollLast(); // if existing number is lees 
-                // then nums[right] they will never be part of ans 
-            }
-            dq.addLast(right);            
             right++;
+
         }
-         // last window
-        ans.add(nums[dq.peekFirst()]);
 
-        return ans.stream().mapToInt(i -> i).toArray();
+        return ans;
 
+
+        
     }
 }
