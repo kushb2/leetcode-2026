@@ -12,7 +12,6 @@ public:
         for(int i=0;i<newTriplet.size();i++){
             mergedTriple[i] = max(currTriplet[i], newTriplet[i]);
             if(mergedTriple[i] > target[i]){
-                cout<<mergedTriple[i]<<" "<<target[i]<<endl;
                 return currTriplet;
             } 
         }
@@ -27,10 +26,6 @@ public:
         while(index < triplets.size()){
 
             currTriples = merge(triplets[index], currTriples, target);
-            for(auto it: currTriples){
-                cout<<it<<" ";
-            }
-            cout<<endl;
             if(same(currTriples, target)){
                 return true;
             }
