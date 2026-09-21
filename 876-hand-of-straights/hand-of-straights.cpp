@@ -15,7 +15,6 @@ public:
                     currGroupSize++;
                     cardAndThereFreq[currCard]--;
                     if(cardAndThereFreq[currCard] == 0){
-                        cout<<currCard<<endl;
                         cardAndThereFreq.erase(currCard);
                     }
                     currCard++;
