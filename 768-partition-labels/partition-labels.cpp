@@ -1,28 +1,29 @@
 class Solution {
 public:
-    bool allFreqCover(map<char,int> charByFreq, map<char,int> currSubStringFreq){
-        for(auto [it, freq]: currSubStringFreq){
-            if(charByFreq[it] != freq) return false;
-        }
-        return true;
-    }
-    vector<int> partitionLabels(string s) {
-        map<char,int> charByFreq, currSubStringFreq;
-        for(auto it: s){
-            charByFreq[it]++;
-        }
-        vector<int> ans;
-        int left = 0;
-        for(int right = 0; right< s.size(); right++){
-            currSubStringFreq[s[right]]++;
+    
+// ababcbacadefegdehijhklij
+// ababcbaca
 
-            if(allFreqCover(charByFreq,currSubStringFreq)){
-                ans.push_back(right - left + 1);
-                currSubStringFreq.clear();
-                left = right+1;
-                continue;
+
+    vector<int> partitionLabels(string s) {
+        map<char,int> charLastIndex;
+        for(int i=0;i<s.size();i++){
+            charLastIndex[s[i]] = i;
+        }
+        
+        vector<int> ans;
+        int statingIndexOfPartition = 0, right = 0;
+        for(int left = 0;left< s.size();left++){
+            char currChar = s[left];
+            int lastIndex = charLastIndex[currChar];
+            right = max(lastIndex, right);
+            if(left == right){
+                ans.push_back(right - statingIndexOfPartition + 1);
+                statingIndexOfPartition = left+1;
             }
         }
+
+        return ans;
 
         return ans;
 
