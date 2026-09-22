@@ -10,8 +10,8 @@ public:
             int end = lastIndex[s[start]];
             int curr = start;
             while( curr != end){
-                end = max(end, lastIndex[s[curr]]);
                 curr++;
+                end = max(end, lastIndex[s[curr]]);
             }
             ans.push_back(end-start+1);
             start = end+1;
