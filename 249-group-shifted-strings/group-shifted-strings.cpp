@@ -4,7 +4,7 @@ public:
         string converted = "0,";
 
         for(int i=1;i<s.size();i++){
-            int diff = (s[i-1] - s[i] + 26) % 26;
+            int diff = (s[i] - s[i-1] + 26) % 26;
             converted += to_string(diff) + ",";
         }
             // 25+26 => 51%26
