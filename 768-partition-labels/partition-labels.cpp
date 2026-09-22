@@ -12,7 +12,7 @@ public:
         while(i < n){
             int j = i;
             int lastOccurence = lastOccurenceMap[s[j]];
-            while(j < lastOccurence){
+            while(j != lastOccurence){
                 lastOccurence = max(lastOccurence, lastOccurenceMap[s[j]]);
                 j++;
             }
