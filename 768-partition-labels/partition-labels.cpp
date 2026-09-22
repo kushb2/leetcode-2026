@@ -1,34 +1,27 @@
 class Solution {
 public:
-    
-// ababcbacadefegdehijhklij
-// ababcbaca
-
-
     vector<int> partitionLabels(string s) {
-        map<char,int> charLastIndex;
-        for(int i=0;i<s.size();i++){
-            charLastIndex[s[i]] = i;
+        map<int,int> lastOccurenceMap;
+        int n = s.size();
+        for(int i=0;i<n;i++){
+            lastOccurenceMap[s[i]] = i;
         }
-        
+
+        int i = 0;
         vector<int> ans;
-        int statingIndexOfPartition = 0, right = 0;
-        for(int left = 0;left< s.size();left++){
-            char currChar = s[left];
-            int lastIndex = charLastIndex[currChar];
-            right = max(lastIndex, right);
-            if(left == right){
-                ans.push_back(right - statingIndexOfPartition + 1);
-                statingIndexOfPartition = left+1;
+        while(i < n){
+            int j = i;
+            int lastOccurence = lastOccurenceMap[s[j]];
+            while(j < lastOccurence){
+                lastOccurence = max(lastOccurence, lastOccurenceMap[s[j]]);
+                j++;
             }
+            ans.push_back(j-i+1);
+            i = j+1;
+
         }
 
         return ans;
-
-        return ans;
-
-
-
         
     }
 };
