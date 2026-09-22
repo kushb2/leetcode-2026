@@ -2,14 +2,14 @@ class Solution {
 public:
     int climbStairs(int n) {
         if(n == 1) return 1;
-        vector<int> ways(n+1);
-        ways[1] = 1;
-        ways[2] = 2;
+        int first = 1;
+        int second = 2;
 
         for(int i=3;i<=n;i++){
-            ways[i] = ways[i-1]+ ways[i-2];
+            int temp = second;
+            second = first + second;
+            first = temp;
         }
-        return ways[n];
-        
+        return second;
     }
 };
