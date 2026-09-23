@@ -1,15 +1,15 @@
 class Solution {
 public:
     int maxProfit(vector<int>& nums, int start, int end, int n){
-        vector<int> dp(n);// 1 2
-        dp[start] = nums[start];
-        dp[start+1] = max(nums[start], nums[start+1]);
-        start +=2;
+       int first = nums[start], second = max(nums[start], nums[start+1]);
+       start +=2;
         while(start<=end){
-            dp[start] = max(nums[start]+ dp[start-2], dp[start-1]);
+            int temp = second;
+            second = max(nums[start]+ first, second);
+            first = temp;
             start++;
         }
-        return dp[end];
+        return second;
     }
     int rob(vector<int>& nums) {
         int n = nums.size();
