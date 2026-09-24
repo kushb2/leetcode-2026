@@ -1,29 +1,32 @@
 class MinStack {
 public:
-    stack<pair<int,int>> st;// value , min
-    
+    stack<int> st, minSt;// value , min
+
     MinStack() {
         
     }
     
     void push(int value) {
-        if(st.empty()){
-            st.push({value,value});
-        }else{
-            st.push({value, min(value, st.top().second)});
+        st.push(value);
+        if(minSt.empty() || value <= minSt.top()){
+            minSt.push(value);// if value > minSt.top then value can never contibute the the min value answer 
+            // <= why equal sign , -3 comes twice then if we do not enter in minStack then we may pop before eary 
         }
     }
     
     void pop() {
+        if(st.top() == minSt.top()){
+            minSt.pop(); //<= why equal sign , -3 comes twice then if we do not enter in minStack then we may pop before eary 
+        }
         st.pop();
     }
     
     int top() {
-        return st.top().first;
+        return st.top();
     }
     
     int getMin() {
-        return st.top().second;
+        return minSt.top();
     }
 };
 
