@@ -12,9 +12,7 @@ public:
         stack<pair<int,double>> st;
         for(int i=n-1;i>=0;i--){
             
-            if(!st.empty() && arr[i].second <= st.top().second){
-                // do nothing
-            }else{
+            if(st.empty() || arr[i].second > st.top().second){
                 st.push(arr[i]);
             }
             
