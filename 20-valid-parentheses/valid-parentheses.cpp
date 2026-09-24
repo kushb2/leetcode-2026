@@ -9,12 +9,11 @@ public:
 
         for(auto it: s){
             if(map.contains(it)){// closing bracket 
-                if(st.empty()){// no one is waiting 
-                    return false;
-                }else if(st.top() == map[it]){// found same type of opening bracket
-                    st.pop(); // close this bracket , it is no longer waiting .
-                }else{
+                int watingOpeningBrakcet = st.empty() ? '*' : st.top(); // handle stack empty case
+                if(map[it] != watingOpeningBrakcet){
                     return false;// other closing bracket is waiting 
+                }else{
+                    st.pop();
                 }
             }else{
                 st.push(it); // wait for a closing bracket
