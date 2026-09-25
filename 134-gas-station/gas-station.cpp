@@ -1,47 +1,30 @@
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
-
         int n = gas.size();
+        int start = 0;
+        while(start < gas.size()){
+           int i = start;
+           int totalStationToCover = n;
+           int totalGas = 0;
+           while(totalStationToCover > 0){// 3 
+            i = i % n;
+            totalGas += gas[i];
+            totalGas -= cost[i];
 
-        for (int start = 0; start < n; start++) {
-
-            long long currGas = 0;
-            int visited = 0;
-            int index = start;
-
-            while (visited < n) {
-
-                currGas += gas[index];
-
-                // cannot go from this station to next
-                if (currGas < cost[index]) {
-                    break;
-                }
-
-                currGas -= cost[index];
-
-                index = (index + 1) % n;
-                visited++;
+            // can move to next station 
+            if(totalGas < 0){
+                // can not go to next station 
+                break;
             }
-
-            // completed all stations
-            if (visited == n) {
-                return start;
-            }
-             // We failed at `index`.
-            // No need to try any station from start+1 ... index.
-            // Jump directly to the next station.
-            if (index < start) {
-                // wrapped around and still failed,
-                // so no later untried start can work
-                return -1;
-            }
-
-            start = index;
+            totalStationToCover--;
+            i++;
+           }
+           if(totalStationToCover == 0) return start;
+           if(i < start) return -1;
+           // if from i can not move further so i can not move from i-1 as well
+           start = i+1;
         }
-
         return -1;
-        
     }
 };
