@@ -1,25 +1,24 @@
 class Solution {
 public:
     int carFleet(int target, vector<int>& position, vector<int>& speed) {
-        int n = position.size();
-        vector<pair<int,double>> arr; // position and (speed, time to reach destination) 
-        for(int i=0;i<n;i++){
-            double timeToReachDestination = (double)(target - position[i] ) / (double)speed[i];// how much time this car to reach at 
-            arr.push_back( {position[i], timeToReachDestination});
+        vector<pair<int,double>> arr; // position and time to reach target
+        for(int i=0;i< position.size();i++){
+            double time = (double)(target - position[i])/ (double)speed[i];
+            arr.push_back({position[i], time});
         }
-        sort(arr.begin(), arr.end()); // all line in a single line sorted by there position
 
-        stack<pair<int,double>> st;
-        for(int i=n-1;i>=0;i--){
-            
-            if(st.empty() || arr[i].second > st.top().second){
-                st.push(arr[i]);
+        // sort by position 
+        sort(arr.begin(), arr.end());
+
+        stack<double> st;
+
+        for(int i=0;i<position.size();i++){
+            while(!st.empty() && st.top() <= arr[i].second){
+                st.pop();
             }
-            
+            st.push(arr[i].second);
         }
-
         return st.size();
-
         
     }
 };
