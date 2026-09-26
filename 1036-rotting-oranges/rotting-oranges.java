@@ -32,7 +32,7 @@ class Solution {
                 int y = it[1] + j;
 
                 if(valid(grid, x, y, n, m)){
-                    timeTaken = Math.max(timeTaken, time+1);
+                    timeTaken =  time+1;
                     grid[x][y] = 2;
                     q.add(new int[]{x,y,time+1});
                 }
