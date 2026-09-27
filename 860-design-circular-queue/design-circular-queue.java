@@ -7,7 +7,7 @@ class MyCircularQueue {
     public MyCircularQueue(int k) {
         this.arr = new int[k];
         this.count = 0;
-        this.head =  -1;
+        this.head =  0;
         this.tail =  -1;
         this.size = k;
         
@@ -15,13 +15,9 @@ class MyCircularQueue {
     
     public boolean enQueue(int value) {
         if(size == count) return false;
-        if(count == 0){
-            tail = 0;
-            head = 0;
-        }else{
-            tail++;
-            tail = tail % size;
-        }
+        tail++;
+        tail = tail % size;
+        
         
         arr[tail] = value;
         count++;
