@@ -6,20 +6,16 @@ class Solution {
         {0,1}, {0,-1}, {1,0}, {-1,0}
     };
 
-    public void bfs(Deque<int[]> q,int[][] heights, boolean[][] arr, int n, int m){
-        while(!q.isEmpty()){
-            int[] cell = q.poll();
-            int i = cell[0];
-            int j = cell[1];
-            int height = heights[i][j];
-            for(int[] it: dir){
-                int x = i + it[0];
-                int y = j+ it[1];
-                if(valid(arr, x, y, n, m) && height <= heights[x][y]){
-                    arr[x][y] = true;
-                    q.offer(new int[] { x, y});
-                }
-            }
+    public void dfs(int[][] heights, boolean[][] arr,int i, int j, int n, int m, int prevHeight){
+
+        if(!valid(arr, i, j, n, m)) return;
+        if(prevHeight > heights[i][j]) return;
+        arr[i][j] = true;
+
+        for(int[] it: dir){
+            int x = i + it[0];
+            int y = j + it[1];
+            dfs(heights, arr, x, y, n, m, heights[i][j]);
         }
     }
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
@@ -28,24 +24,17 @@ class Solution {
         boolean[][] pArr = new boolean[n][m];
         boolean[][] aArr = new boolean[n][m];
 
-        Deque<int[]> q1 = new ArrayDeque<>();
-        Deque<int[]> q2 = new ArrayDeque<>();
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(i == 0 || j == 0){
-                    pArr[i][j] = true;
-                    q1.offer(new int[] { i, j });
+                if((i == 0 || j == 0) && pArr[i][j] == false){
+                    dfs(heights,pArr, i,j,n,m, 0);
                 }
 
-                if(i == n-1 || j == m-1){
-                    aArr[i][j] = true;
-                    q2.offer(new int[] { i, j });
+                if((i == n-1 || j == m-1) && aArr[i][j] == false){
+                    dfs(heights,aArr, i,j,n,m, heights[i][j]);
                 }
             }
         }
-
-        bfs(q1, heights, pArr, n, m);
-        bfs(q2, heights, aArr, n, m);
 
         List<List<Integer>> ans = new ArrayList<>();
         for(int i=0;i<n;i++){
