@@ -1,31 +1,29 @@
 class Solution {
-    int findRoot(int[] parent, int x){
-        while(parent[x] != x){
+    int getParent(int[] parent, int x){
+        while (x != parent[x]) {
             x = parent[x];
         }
         return x;
     }
-    public int[] findRedundantConnection(int[][] edges) {
-        int n = edges.length;// index is 1 
-        int[] parent = new int[n+1];
 
-        for(int i=1;i<=n;i++){
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        int[] parent = new int[n];
+        for(int i=0;i<n;i++){
             parent[i] = i;
         }
 
         for(int[] it: edges){
-            int a = it[0];
-            int b = it[1];
+            int parentA = getParent(parent, it[0]-1);
+            int parentB = getParent(parent, it[1]-1);
 
-            int rootA = findRoot(parent, a);
-            int rootB = findRoot(parent, b);
-
-            if(rootA == rootB){
+            if(parentA == parentB){
                 return it;
             }
-            parent[rootA] = rootB;
+            parent[parentA] = parentB;
         }
-        return new int[] {};
 
+        return new int[] {};
+        
     }
 }
