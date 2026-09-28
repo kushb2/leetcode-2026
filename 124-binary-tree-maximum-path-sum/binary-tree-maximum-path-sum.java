@@ -14,22 +14,35 @@
  * }
  */
 class Solution {
-    int maxSum = Integer.MIN_VALUE;
-    public int maxPathSum(TreeNode root) {
-        solve(root);
-        return maxSum;
-    }
-    public int solve(TreeNode root){
+    int maxSum;
+    public int postOrder(TreeNode root){
         if(root == null) return 0;
-        // if(root.left == null && root.right == null) return root.val;
+        int left = postOrder(root.left);
+        int right = postOrder(root.right);
+        int sum = root.val;
+        if(left > 0){
+            sum += left;
+        }
+        if(right > 0){
+            sum += right;
+        }
 
-        int leftSum = solve(root.left);
-        int rightSum = solve(root.right);
+        maxSum = Math.max(maxSum, sum);
 
-        leftSum = leftSum < 0 ? 0 : leftSum;
-        rightSum = rightSum < 0 ? 0 : rightSum;
+        if(sum == root.val){
+            return sum;
+        }else if(left > right){
+            return root.val + left;
+        }else{
+            return root.val + right;
+        }
 
-        maxSum = Math.max(maxSum, leftSum + rightSum + root.val);
-        return  Math.max(leftSum, rightSum) + root.val;
+    }
+    public int maxPathSum(TreeNode root) {
+        this.maxSum = -100000;
+        postOrder(root);
+        return maxSum;
+
+        
     }
 }
