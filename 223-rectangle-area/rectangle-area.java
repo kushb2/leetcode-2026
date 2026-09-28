@@ -11,7 +11,7 @@ class Solution {
        int top = Math.min(ay2, by2);
        int bottom = Math.max(ay1, by1);
        int yOverLap = Math.max(0, top - bottom);
-       System.out.println(xOverlap + " " + yOverLap);
+    //    System.out.println(xOverlap + " " + yOverLap);
        return areaOfA + areaOfB - (xOverlap * yOverLap);
 
         
