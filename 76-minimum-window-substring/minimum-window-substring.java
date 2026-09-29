@@ -17,17 +17,27 @@ class Solution {
 
         int left = 0, ans = Integer.MAX_VALUE;
         int start=0, end=0;
-
+        int matched = 0;
         for(int right = 0;right < sArr.length;right++){
             map2.put(sArr[right], map2.getOrDefault(sArr[right], 0)+1);
+            if(map1.containsKey(sArr[right]) 
+            && map1.get(sArr[right]).equals(map2.get(sArr[right]))){
+                matched++;
+            }
 
-            while(same(map1, map2)){
+            while(matched == map1.size()){
                 if((right-left+1) < ans){
                     ans = Math.min(right-left+1, ans);  
                     start = left; end = right;
                 }
                 map2.put(sArr[left], map2.getOrDefault(sArr[left], 0)-1);
+               // FIX: Check lChar, and only decrement if count drops strictly below target requirement
+                if (map1.containsKey(sArr[left]) && map2.get(sArr[left]) < map1.get(sArr[left])) {
+                    matched--;
+                }
                 left++;
+               
+            
             }
 
         }
