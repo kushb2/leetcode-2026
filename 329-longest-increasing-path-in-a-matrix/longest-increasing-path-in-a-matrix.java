@@ -13,7 +13,7 @@ class Solution {
         if(!isValid(i, j, n, m, matrix, previous)) return 0;
 
         // if i already calculate longest path from i,j then simply return it 
-        if(dp[i][j] != 0) return dp[i][j];
+        if(dp[i][j] != -1) return dp[i][j];
         
         int max = 0;
         for(int[] it: dir){
@@ -29,7 +29,9 @@ class Solution {
     public int longestIncreasingPath(int[][] matrix) {
         int n = matrix.length, m = matrix[0].length;
         int[][] dp = new int[n][m]; // each index will store longest increaing path starting from [i][j];
-
+        for (int i = 0; i < n; i++) {
+                Arrays.fill(dp[i], -1);
+        }
         int ans = -1;
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
