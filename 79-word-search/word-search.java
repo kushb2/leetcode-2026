@@ -33,6 +33,27 @@ class Solution {
     public boolean exist(char[][] board, String word) {
         int n = board.length, m = board[0].length;
         char startingChar = word.charAt(0); 
+        Map<Character, Integer> map = new HashMap<>();
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                char c = board[i][j];
+                map.put(c, map.getOrDefault(c, 0)+1);
+            }
+        }
+        Map<Character, Integer> map2 = new HashMap<>();
+
+        for(char c : word.toCharArray()){
+            map2.put(c, map2.getOrDefault(c, 0)+1);
+        }
+
+        for(var it : map2.entrySet()){
+            if(!map.containsKey(it.getKey())) return false;
+            if(map.get(it.getKey()) < it.getValue()) return false;
+        }
+
+        
+
 
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
