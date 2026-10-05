@@ -1,21 +1,20 @@
 class Solution {
 
-    int solve(int[] nums, int idx, int[] dp){
-        if(idx >= nums.length-1) return 0;
-
-        if(dp[idx] != -1) return dp[idx];
-
-        int min = Integer.MAX_VALUE;
-        for(int i=1;i<=nums[idx];i++){
-           min = Math.min(min, solve(nums, idx+i, dp));
-        }
-        return dp[idx] = min != Integer.MAX_VALUE ? min + 1 : Integer.MAX_VALUE;
-    }
     public int jump(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, -1);
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
 
-        return solve(nums, 0, dp);
+       for(int i=0;i<n;i++){
+        for(int j=1;j<=nums[i];j++){
+            if(i+j >= n) break;
+            if(dp[i+j] == Integer.MAX_VALUE) {
+                 dp[i+j] = 1 + dp[i];
+            } 
+        }
+       }
+        return dp[nums.length-1];
         
     }
 }
