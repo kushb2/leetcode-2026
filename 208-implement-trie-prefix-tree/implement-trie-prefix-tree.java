@@ -1,11 +1,9 @@
 class Trie {
     class TrieNode{
-        char c;
         TrieNode[] children;
         boolean endOfWord;
 
-        public TrieNode(char c){
-            this.c = c;
+        public TrieNode(){
             this.children = new TrieNode[26];
             this.endOfWord = false;
         }
@@ -14,7 +12,7 @@ class Trie {
     TrieNode head;
 
     public Trie() {
-        head = new TrieNode('a');
+        head = new TrieNode();
     }
     
     public void insert(String word) {
@@ -23,7 +21,7 @@ class Trie {
         for(int i=0;i<n;i++){
             int index = word.charAt(i) - 'a';
             if(root.children[index] == null){
-                root.children[index] = new TrieNode(word.charAt(i));
+                root.children[index] = new TrieNode();
             }
 
             if(i == n-1){
