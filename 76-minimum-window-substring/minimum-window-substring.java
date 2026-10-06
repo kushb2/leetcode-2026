@@ -1,55 +1,40 @@
 class Solution {
-    public boolean same(Map<Character, Integer> map1, Map<Character, Integer> map2){
-        for(var it: map1.entrySet()){
-            if(!map2.containsKey(it.getKey())) return false;
-            if(map2.get(it.getKey()) < it.getValue()) return false;
+    public boolean validSubString(Map<Character, Integer> map1, Map<Character, Integer>  map2){
+        for(var it: map2.entrySet()){
+            if(!map1.containsKey(it.getKey())) return false;
+            if(map1.get(it.getKey()) < it.getValue()) return false;
         }
         return true;
     }
     public String minWindow(String s, String t) {
-        char[] sArr = s.toCharArray();
-        char[] tArr =  t.toCharArray();
-        Map<Character, Integer> map1 = new HashMap<>();// t map
-        Map<Character, Integer> map2 = new HashMap<>();
-        for(char it: tArr){
-            map1.put(it, map1.getOrDefault(it, 0)+1);
+        if(s.length() < t.length()) return "";
+        Map<Character, Integer> map1, map2; // char and freq
+        map1 = new HashMap<>(); map2 = new HashMap<>();
+        for(int i=0;i<t.length();i++){
+            map2.put(t.charAt(i), map2.getOrDefault(t.charAt(i), 0) + 1);
         }
 
-        int left = 0, ans = Integer.MAX_VALUE;
-        int start=0, end=0;
-        int matched = 0;
-        for(int right = 0;right < sArr.length;right++){
-            map2.put(sArr[right], map2.getOrDefault(sArr[right], 0)+1);
-            if(map1.containsKey(sArr[right]) 
-            && map1.get(sArr[right]).equals(map2.get(sArr[right]))){
-                matched++;
-            }
+        int left = 0, ans = Integer.MAX_VALUE, minLeft = 0, minRight = 0;
+        for(int right=0;right<s.length();right++){
+            char c = s.charAt(right);
+            map1.put(c, map1.getOrDefault(c, 0) + 1);
 
-            while(matched == map1.size()){
-                if((right-left+1) < ans){
-                    ans = Math.min(right-left+1, ans);  
-                    start = left; end = right;
+
+
+            while(validSubString(map1, map2)){
+                if(ans > right-left+1){
+                    ans = Math.min(ans, right-left+1);
+                    minLeft = left;
+                    minRight = right;
                 }
-                map2.put(sArr[left], map2.getOrDefault(sArr[left], 0)-1);
-               // FIX: Check lChar, and only decrement if count drops strictly below target requirement
-                if (map1.containsKey(sArr[left]) && map2.get(sArr[left]) < map1.get(sArr[left])) {
-                    matched--;
-                }
+                map1.put(s.charAt(left), map1.get(s.charAt(left)) - 1);
                 left++;
-               
-            
             }
 
         }
 
-        if(ans == Integer.MAX_VALUE) return "";
-
-        StringBuilder sb = new StringBuilder();
-        for(int i= start; i<= end;i++){
-            sb.append(sArr[i]);
-        }
-        return new String(sb);
-
+        return ans == Integer.MAX_VALUE ? "" : s.substring(minLeft, minRight+1);
+    
 
     }
 }
