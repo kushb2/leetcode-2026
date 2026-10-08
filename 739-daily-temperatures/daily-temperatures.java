@@ -1,22 +1,22 @@
 class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
-        // monotically descrsing 
-        Deque<Integer> st = new ArrayDeque<>();
         int n = temperatures.length;
         int[] ans = new int[n];
-        Arrays.fill(ans,0);
-        for(int i=0;i<n;i++){
-            int curr = temperatures[i];
+        Arrays.fill(ans, 0);
+        Stack<int[]> st = new Stack<>(); // temp and index
 
-            while(!st.isEmpty() && temperatures[st.peek()] < curr){
-                // find wamer days for st.top 
-                ans[st.peek()] = i - st.peek();
-                st.pop();
+        for(int i=0;i<n;i++){
+            while(!st.isEmpty() && st.peek()[0] < temperatures[i]){
+                // find warmer days 
+                int index = st.pop()[1];
+                ans[index] = i - index;
             }
 
-            st.push(i);
-
+            st.add(new int[] { temperatures[i], i});
         }
+
+
+
         return ans;
     }
 }
