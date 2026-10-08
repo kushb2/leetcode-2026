@@ -1,21 +1,22 @@
 class Solution {
-
-    public boolean canJump(int[] nums) {
-        boolean[] dp = new boolean[nums.length];
-        Arrays.fill(dp, false);
-        dp[0] = true;
-        
-        for(int i=0;i<nums.length;i++){
-
-            for(int j=1; dp[i] && j<= nums[i] && i+j < nums.length;j++){
-                dp[i+j] = true;
-            }
-
+    public int solve(int[] nums,int[] dp,int n, int idx){
+        if(idx >= n-1){
+            return 1;
         }
 
-        return dp[nums.length-1];
-        
-        
+        if(dp[idx] != -1) return dp[idx];
+
+        for(int i=1;i<=nums[idx];i++){
+            if(solve(nums,dp, n, idx+i) == 1){
+                return dp[idx+i] = 1;
+            }
+        }
+        return dp[idx] = 0;
+    }
+    public boolean canJump(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, -1);
+        int res = solve(nums,dp, nums.length, 0);
+        return res == 1 ? true : false;
     }
 }
-
