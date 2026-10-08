@@ -4,8 +4,7 @@ class Solution {
         Arrays.fill(dp, false);
         dp[0] = true;
 
-        for(int i=0;i<nums.length;i++){
-            if(dp[i] == false) break;
+        for(int i=0;i<nums.length-1;i++){
             for(int j=1;j<=nums[i] && dp[i] && i+j < nums.length;j++){
                 dp[i+j] = true;
             }
