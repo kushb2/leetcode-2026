@@ -14,20 +14,18 @@
  * }
  */
 class Solution {
-    int ans = 0;
-
-    public int solve(TreeNode root){
+    int ans;
+    public int postOrder(TreeNode root){
         if(root == null) return 0;
 
-        int leftSubTreeLen = solve(root.left);
-        int rightSubTreeLen = solve(root.right);
-
-        ans = Math.max(ans, leftSubTreeLen + rightSubTreeLen);
-        return Math.max(leftSubTreeLen, rightSubTreeLen) + 1;
-
+        int left = postOrder(root.left);
+        int right = postOrder(root.right);
+        ans = Math.max(left+right, ans);
+        return Math.max(left, right)+1;
     }
     public int diameterOfBinaryTree(TreeNode root) {
-        solve(root);
+        ans = 0;
+        postOrder(root);
         return ans;
         
     }
