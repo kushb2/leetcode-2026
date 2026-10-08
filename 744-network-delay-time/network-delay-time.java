@@ -21,11 +21,12 @@ class Solution {
             int[] currNode = pq.poll();
             int node = currNode[0]; int time = currNode[1]; 
             if(arr[node] != -1) continue; 
-            visitedCount++;   
+            visitedCount++;
             arr[node] = time;
-
-           
+            if(visitedCount == n) return time;
             maxTime = Math.max(maxTime, time);
+
+
             for(int[] it: adj.get(node)){ 
                     if(arr[it[0]] != -1) continue; 
                      pq.offer(new int[] { it[0], it[1] + time});
