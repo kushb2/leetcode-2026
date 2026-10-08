@@ -19,13 +19,14 @@ class Solution {
 
         while(!pq.isEmpty()){
             int[] currNode = pq.poll();
-            
-            int node = currNode[0]; int time = currNode[1];
-            if(arr[node] != -1) continue;  
+            int node = currNode[0]; int time = currNode[1]; 
+            if(arr[node] != -1) continue; 
             visitedCount++;   
             arr[node] = time;
+
+           
             maxTime = Math.max(maxTime, time);
-            for(int[] it: adj.get(node)){
+            for(int[] it: adj.get(node)){ 
                      pq.offer(new int[] { it[0], it[1] + time});
             }
         }
