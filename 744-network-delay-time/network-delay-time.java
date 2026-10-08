@@ -19,13 +19,10 @@ class Solution {
         while(!pq.isEmpty()){
             int[] currNode = pq.poll();
             int node = currNode[0]; int time = currNode[1];
-            if(arr[node] == -1){
-                arr[node] = time;
-            }        
+            if(arr[node] != -1) continue;     
+            arr[node] = time;
             for(int[] it: adj.get(node)){
-                if(arr[it[0]] == -1){
                      pq.offer(new int[] { it[0], it[1] + time});
-                }
             }
         }
 
