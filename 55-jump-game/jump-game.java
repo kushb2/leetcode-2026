@@ -14,9 +14,19 @@ class Solution {
         return dp[idx] = 0;
     }
     public boolean canJump(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, -1);
-        int res = solve(nums,dp, nums.length, 0);
-        return res == 1 ? true : false;
+        boolean[] dp = new boolean[nums.length];
+        Arrays.fill(dp, false);
+        dp[0] = true;
+
+        for(int i=0;i<nums.length;i++){
+            if(dp[i] == false) break;
+            for(int j=1;j<=nums[i];j++){
+                if(i+j > nums.length-1){
+                    break;
+                }
+                dp[i+j] = true;
+            }
+        }
+        return dp[nums.length-1];
     }
 }
