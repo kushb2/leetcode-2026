@@ -27,6 +27,7 @@ class Solution {
            
             maxTime = Math.max(maxTime, time);
             for(int[] it: adj.get(node)){ 
+                    if(arr[it[0]] != -1) continue; 
                      pq.offer(new int[] { it[0], it[1] + time});
             }
         }
