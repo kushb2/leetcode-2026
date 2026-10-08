@@ -15,24 +15,22 @@ class Solution {
         );
 
         pq.offer(new int[] { k-1,0});
+        int maxTime = 0, visitedCount = 0;
 
         while(!pq.isEmpty()){
             int[] currNode = pq.poll();
+            
             int node = currNode[0]; int time = currNode[1];
-            if(arr[node] != -1) continue;     
+            if(arr[node] != -1) continue;  
+            visitedCount++;   
             arr[node] = time;
+            maxTime = Math.max(maxTime, time);
             for(int[] it: adj.get(node)){
                      pq.offer(new int[] { it[0], it[1] + time});
             }
         }
 
-        int maxTime = 0;
-        for(int i=0;i<arr.length;i++){
-            if(arr[i] == -1) return -1;
-            maxTime = Math.max(maxTime, arr[i]);
-        }
-
-        return maxTime;
+        return visitedCount == n ? maxTime : -1;
 
 
 
