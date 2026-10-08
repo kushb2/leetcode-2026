@@ -1,4 +1,5 @@
-class Solution {
+
+import java.lang.reflect.Array;class Solution {
 
     public int solve(int[] nums,int[] dp, int n, int idx){
         if(idx >= n-1){
@@ -18,7 +19,15 @@ class Solution {
     public int jump(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
-        Arrays.fill(dp, -1);
-        return solve(nums,dp, n, 0);
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+       
+       for(int i=0;i<n;i++){
+        for(int j=1;j<= nums[i] && j+i < n  ;j++){
+            dp[j+i] = Math.min(dp[j+i],dp[i] + 1);
+        }
+       }
+        
+        return dp[n-1];
     }
 }
