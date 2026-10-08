@@ -8,7 +8,7 @@ class Solution {
             int u = it[0]-1; int v = it[1]-1; int time = it[2];
             adj.get(u).add(new int[] { v,time}); 
         }
-        Queue<int[]> pq = new ArrayDeque<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
         pq.offer(new int[] { k-1,0});
         dist[k-1] = 0;
 
