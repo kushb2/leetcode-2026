@@ -28,6 +28,8 @@ class AuthenticationManager {
         for(var x : map.entrySet()){
             if(x.getValue() <= currentTime){
                 expiredTokenId.add(x.getKey());
+            }else{
+                break;
             }
         }
 
