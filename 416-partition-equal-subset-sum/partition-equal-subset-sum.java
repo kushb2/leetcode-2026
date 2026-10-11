@@ -4,7 +4,7 @@ class Solution {
         if(n == idx){
             return targetSum == currSum ? 1 : 0;
         }
-        if (currSum > targetSum) return 0;
+        // if (currSum > targetSum) return 0;
 
         if(dp[idx][currSum] != -1) return dp[idx][currSum];
 
