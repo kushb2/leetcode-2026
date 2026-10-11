@@ -1,18 +1,20 @@
 class Solution {
 
-    public int solve(int[] nums,int targetSum, int n, int idx,int[][] dp){
-        if(n == idx){
-            return targetSum == 0 ? 1 : 0;
-        }
+    public int solve(int[] nums,int targetSum, int n,int[][] dp){
+    if(targetSum == 0){
+        return 1;
+    }
 
-        if (targetSum < 0) return 0;
+    // if (targetSum < 0) return 0;
+        
+    if(n < 0) return 0;
 
-        if(dp[idx][targetSum] != -1) return dp[idx][targetSum];
+    if(dp[n][targetSum] != -1) return dp[n][targetSum];
 
-        int pick = nums[idx] > targetSum ? 0 : solve(nums, targetSum - nums[idx], n, idx+1,dp);
-        int skip = solve(nums, targetSum, n, idx+1,dp);
+    int pick = nums[n] > targetSum ? 0 : solve(nums, targetSum - nums[n], n-1,dp);
+    int skip = solve(nums, targetSum, n-1,dp);
 
-        return dp[idx][targetSum] = ((pick==1) || (skip==1)) ? 1 : 0;
+    return dp[n][targetSum] = ((pick==1) || (skip==1)) ? 1 : 0;
 
     }
 
@@ -27,8 +29,7 @@ class Solution {
         int[][] dp = new int[nums.length][sum/2+1];
         for(int[] it: dp) Arrays.fill(it, -1);
 
-
-        int ans = solve(nums,sum/2, nums.length, 0, dp);
+        int ans = solve(nums,sum/2, nums.length-1, dp);
         return ans == 0 ? false : true;
     }
 }
