@@ -9,8 +9,21 @@
  * }
  */
 class Solution {
+    public ListNode findMid(ListNode head){ // 1 2 3 4
+        // 1 2 3 4 5
+        // 1 1 => 2 3 => 3 , 5 
+        ListNode slow = head, fast = head, prev = null;
+        while(fast != null && fast.next != null){
+            prev = slow;
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        prev.next = null; // spliting two list 
+        return slow;
+    }
+
     public ListNode reverse(ListNode head){
-        ListNode prev = null, next;
+        ListNode prev = null, next = null;
         while(head != null){
             next = head.next;
             head.next = prev;
@@ -19,49 +32,39 @@ class Solution {
         }
         return prev;
     }
-    public ListNode[] mid(ListNode head) {
-        ListNode slow = head, fast = head, prev = null, originalHead = head;
-        while(fast != null && fast.next != null){
-            prev = slow;// 1
-            slow = slow.next;//2
-            fast = fast.next.next;// 3
-        }
-        prev.next = null;
-        return new  ListNode[] { originalHead, slow }; // 1 2 3 4 5
-    }
 
- 
-   
     public void merge(ListNode l1, ListNode l2){
-        boolean chance = true;
-        ListNode l3 = new ListNode(-1);
-        while(l1 != null && l2 != null){// 12 34 
-            if(chance){
+        ListNode dummy = new ListNode(-1);
+        ListNode l3 = dummy;
+        boolean turn = true;
+        while(l1 != null || l2 != null){
+            if(turn && l1 != null){
                 l3.next = l1;
-                l3 = l3.next;
                 l1 = l1.next;
-                chance = false;
-            }else{
-                l3.next = l2;
                 l3 = l3.next;
-                l2 = l2.next;
-                chance = true;
             }
-        
+            
+            if(!turn && l2 != null){
+                l3.next = l2;
+                l2 = l2.next;
+                l3 = l3.next;
+            }
+
+            
+            turn = !turn;
+
         }
-        l3.next = l2;
+
     }
 
     public void reorderList(ListNode head) {
         if(head.next == null) return;
 
-        ListNode[] split = mid(head);
-        ListNode list1 = split[0];
-        ListNode list2 = split[1];
+        // find mid 
+        ListNode l1 = head;
+        ListNode l2 = findMid(head);
+        l2 = reverse(l2);
 
-        list2 = reverse(list2);
-
-        merge(list1, list2);
-        
+        merge(l1, l2);
     }
 }
