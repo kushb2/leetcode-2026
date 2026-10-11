@@ -1,19 +1,18 @@
 class Solution {
 
-    public int solve(int[] nums,int targetSum, int n, int idx, int currSum,int[][] dp){
+    public int solve(int[] nums,int targetSum, int n, int idx,int[][] dp){
         if(n == idx){
-            return targetSum == currSum ? 1 : 0;
+            return targetSum == 0 ? 1 : 0;
         }
 
-        if(currSum == targetSum) return 1;
-        if (currSum > targetSum) return 0;
+        if (targetSum < 0) return 0;
 
-        if(dp[idx][currSum] != -1) return dp[idx][currSum];
+        if(dp[idx][targetSum] != -1) return dp[idx][targetSum];
 
-        int pick = nums[idx] > targetSum ? 0 : solve(nums, targetSum, n, idx+1, currSum + nums[idx],dp);
-        int skip = solve(nums, targetSum, n, idx+1, currSum,dp);
+        int pick = nums[idx] > targetSum ? 0 : solve(nums, targetSum - nums[idx], n, idx+1,dp);
+        int skip = solve(nums, targetSum, n, idx+1,dp);
 
-        return dp[idx][currSum] = ((pick==1) || (skip==1)) ? 1 : 0;
+        return dp[idx][targetSum] = ((pick==1) || (skip==1)) ? 1 : 0;
 
     }
 
@@ -25,11 +24,11 @@ class Solution {
         }
         if(sum % 2 != 0) return false;
 
-        int[][] dp = new int[nums.length][sum+1];
+        int[][] dp = new int[nums.length][sum/2+1];
         for(int[] it: dp) Arrays.fill(it, -1);
 
 
-        int ans = solve(nums,sum/2, nums.length, 0, 0, dp);
+        int ans = solve(nums,sum/2, nums.length, 0, dp);
         return ans == 0 ? false : true;
     }
 }
