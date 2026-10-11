@@ -24,7 +24,11 @@ class Solution {
 
         // i can no longer pick any nums , my iteration is complete will not find any ans now 
         if(idx >= n) return 0;
-        String key = Integer.toString(idx) + "#" + Integer.toString(sum);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Integer.toString(idx));
+        sb.append("#");
+        sb.append(Integer.toString(sum));
+        String key = sb.toString();
         if(map.containsKey(key)) return map.get(key);
 
         int postive = solveDp(nums, n, idx+1,target, sum + nums[idx], map);
