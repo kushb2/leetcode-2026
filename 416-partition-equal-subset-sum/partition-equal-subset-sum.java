@@ -10,7 +10,7 @@ class Solution {
 
         if(dp[idx][currSum] != -1) return dp[idx][currSum];
 
-        int pick = solve(nums, targetSum, n, idx+1, currSum + nums[idx],dp);
+        int pick = nums[idx] > targetSum ? 0 : solve(nums, targetSum, n, idx+1, currSum + nums[idx],dp);
         int skip = solve(nums, targetSum, n, idx+1, currSum,dp);
 
         return dp[idx][currSum] = ((pick==1) || (skip==1)) ? 1 : 0;
