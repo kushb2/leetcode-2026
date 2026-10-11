@@ -4,8 +4,6 @@ class Solution {
     if(targetSum == 0){
         return 1;
     }
-
-    // if (targetSum < 0) return 0;
         
     if(n < 0) return 0;
 
@@ -26,10 +24,27 @@ class Solution {
         }
         if(sum % 2 != 0) return false;
 
-        int[][] dp = new int[nums.length][sum/2+1];
-        for(int[] it: dp) Arrays.fill(it, -1);
+        boolean[][] dp = new boolean[nums.length][sum/2+1]; // index to sum 
+        for(boolean[] it: dp) Arrays.fill(it, false);
+        int n = nums.length;
 
-        int ans = solve(nums,sum/2, nums.length-1, dp);
-        return ans == 0 ? false : true;
+        for(int i=0;i<n;i++){
+            dp[i][0] = true; // to make sum 0 is always possible 
+        }
+
+        for(int i=1;i<n;i++){
+            for(int j=1;j<=sum/2;j++){
+
+                boolean take = false;
+                if(j >= nums[i]){
+                    take = dp[i-1][j - nums[i]];
+                }
+                boolean skip = dp[i-1][j];
+                dp[i][j] = take || skip;
+            }
+        }
+
+        return dp[n-1][sum/2];
+
     }
 }
