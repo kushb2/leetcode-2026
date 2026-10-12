@@ -35,8 +35,35 @@ class Solution {
         int n = word1.length();
         int m = word2.length();
         int[][] dp = new int[n+1][m+1];
-        for(int[] it: dp) Arrays.fill(it, -1);
+        
 
-        return solve(word1.toCharArray(), n-1, word2.toCharArray(), m-1,dp);
+        for(int i=0;i<=n;i++){
+            dp[i][0] = i;
+        }
+
+        for(int j=0;j<=m;j++){
+            dp[0][j] = j;
+        }
+
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(word1.charAt(i-1) == word2.charAt(j-1)){ // Match move to next index
+                    dp[i][j] = dp[i-1][j-1];
+                }else{ // three options
+                    int cost = INF;
+                    int replace = dp[i-1][j-1];
+                    int delete = dp[i-1][j];
+                    int insert = dp[i][j-1];
+                    cost = Math.min(cost, replace);
+                    cost = Math.min(cost, delete);
+                    cost = Math.min(cost, insert);
+                    dp[i][j] = cost + 1;
+                }
+            }
+        }
+
+        return dp[n][m];
+
+
     }
 }
