@@ -1,45 +1,36 @@
 class Solution {
-    public boolean solve(char[] arr, int n, int maxWordLen, Set<String> set, int[] visited, int idx){
-        if(idx == n) return true;
 
-        if(visited[idx] != -1){
-            return visited[idx] == 1 ? true : false;
+    Set<String> set;
+    int[] dp;
+    int n;
+    public boolean solve(String s, int idx){
+        if(idx == n) return true; // able to break arr completely no char left to break;
+
+        if(dp[idx] != -1){
+            return dp[idx] == 1 ? true : false;
         }
-
+        
+        // Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
         StringBuilder sb = new StringBuilder();
-        for(int start = idx; start < Math.min(n, idx+maxWordLen); start++){
-            sb.append(arr[start]);
-            if(set.contains(sb.toString())){
-               boolean ans = solve(arr, n, maxWordLen, set, visited, start+1);
-               if(ans == true){
-                    visited[start] = 1;
-                    return true;
-               }
-            }
-        }
+        for(int start = idx; start < n; start++){
+            sb.append(s.charAt(start));
 
-        visited[idx] = 0;
+            if(set.contains(sb.toString()) && solve(s, start+1)){
+                dp[idx] = 1;
+                return true;
+            }
+
+        }
+        dp[idx] = 0; // can not break string starting from idx index 
+
         return false;
 
     }
     public boolean wordBreak(String s, List<String> wordDict) {
-        int n = s.length();
-        int[] visited = new int[n];
-        Arrays.fill(visited, -1);
-        Set<String> set = new HashSet<>();
-        int maxWordLen = 0;
-        for(String it: wordDict){
-            maxWordLen = Math.max(maxWordLen, it.length());
-            set.add(it);
-        } 
-
-        return solve(s.toCharArray(), n, maxWordLen, set, visited, 0);
-
-        
-
-
-
-        
-        
+        set = new HashSet<>(wordDict);
+        n = s.length();
+        dp = new int[n];
+        Arrays.fill(dp, -1);
+        return solve(s,0);
     }
 }
