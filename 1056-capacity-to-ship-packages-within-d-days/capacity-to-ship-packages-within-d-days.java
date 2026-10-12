@@ -22,7 +22,6 @@ class Solution {
             int mid = left + (right-left)/2; // try with this weight
 
             int daysNeeded = calDays(weights,mid);
-            System.out.println(mid + " " + daysNeeded);
 
             if(daysNeeded <= days){
                 ans = mid;
