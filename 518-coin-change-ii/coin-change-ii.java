@@ -18,9 +18,25 @@ class Solution {
     }
 
     public int change(int amount, int[] coins) {
-        int[][] dp = new int[amount+1][coins.length];
-        for(int[] it: dp) Arrays.fill(it, -1);
-        return solve(amount, coins, coins.length-1, dp);
+        int n = coins.length;
+        int[][] dp = new int[amount+1][n+1];
+       
+       // one possible way to make amount 0
+        for(int i=0;i<=n;i++) dp[0][i] = 1;
+
+        for(int i=1;i<=amount;i++){ // amount
+            for(int j=1;j<=n;j++){ // coint
+                int coin = coins[j - 1];
+                int take = i - coin >= 0 ?  dp[i-coin][j] : 0;
+                int skip = dp[i][j-1];
+                dp[i][j] = take+skip;
+            }
+               
+        }
+
+        return dp[amount][n];
+
+
         
     }
 }
