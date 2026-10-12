@@ -13,12 +13,10 @@ class Solution {
             for(int i=0;i<=n && !pq.isEmpty();i++){
                 processedTask++;
                 int count = pq.poll();
-                System.out.println(count);
                 if(--count != 0) remTask.add(count);
             }
             totalTime += remTask.isEmpty() ? processedTask : n+1;
             for(int it: remTask) pq.offer(it);
-            System.out.println();
 
         }
         return totalTime;
