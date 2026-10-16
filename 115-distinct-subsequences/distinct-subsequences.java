@@ -1,33 +1,24 @@
-class Solution {
-    int dfs(int[][] dp, char[] s, char[] t, int n, int m, int i, int j){
-        if(j == m){
-            return  1; // i found complete t string one posibile path is there 
-        }
 
-        if(i == n){
-            return  0; // nothing to found futhere to complete t;
-        }
+import java.lang.reflect.Array;class Solution {
+    public int solve(char[] s, char[] t, int i, int j,int[][] dp){
+        if(j < 0) return 1;
+        if(i < 0) return 0;
 
         if(dp[i][j] != -1) return dp[i][j];
 
-
-        if(s[i] == t[j]){// for matching with t[i] i can consider s[i] or i can i will not consdider 
-        // see in future i make another s[i] == t[j]
-            return dp[i][j] = dfs(dp, s,t,n,m, i+1, j+1) + dfs(dp, s, t, n, m, i+1, j);
+        if(s[i] != t[j]){
+            return dp[i][j] = solve(s,t, i-1, j,dp);
         }else{
-            return dp[i][j] =  dfs(dp, s, t, n, m, i+1, j);
+            return dp[i][j] =  (solve(s,t, i-1, j-1,dp) + solve(s,t, i-1, j,dp)); 
         }
-
     }
 
-
     public int numDistinct(String s, String t) {
-        int n = s.length();
-        int m = t.length();
+        int n = s.length(), m = t.length();
         int[][] dp = new int[n][m];
-        for (int i = 0; i < n; i++) {
-                Arrays.fill(dp[i], -1);
-        }
-        return dfs(dp, s.toCharArray(),t.toCharArray(),n,m,0,0);
+        for(int[] it: dp) Arrays.fill(it,-1);
+
+        return solve(s.toCharArray(), t.toCharArray(), n-1,m-1, dp);
+        
     }
 }
