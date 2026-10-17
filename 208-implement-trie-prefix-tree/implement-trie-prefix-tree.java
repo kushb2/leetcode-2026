@@ -24,12 +24,10 @@ class Trie {
                 root.children[index] = new TrieNode();
             }
 
-            if(i == n-1){
-                root.children[index].endOfWord = true;
-            }
-
             root = root.children[index];
         }
+        root.endOfWord = true;
+
     }
     
     public boolean search(String word) {
