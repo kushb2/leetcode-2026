@@ -1,26 +1,30 @@
 class Solution {
-    public void dfs(String node, Map<String, PriorityQueue<String>> map, List<String> ans){
+    public void dfs(String node, Map<String, PriorityQueue<String>> adj,List<String> ans){
 
-        PriorityQueue<String> pq = map.getOrDefault(node, new PriorityQueue<>());
-        while(!pq.isEmpty()){
-            dfs(pq.poll(), map, ans);    
-        }
-         ans.addFirst(node);
         
+        PriorityQueue<String> pq = adj.getOrDefault(node, new PriorityQueue<>());
+        while(!pq.isEmpty()){
+            dfs(pq.poll(), adj, ans);
+        }
+        ans.addFirst(node);
     }
 
     public List<String> findItinerary(List<List<String>> tickets) {
-        List<String> ans = new ArrayList<>();
-        Map<String, PriorityQueue<String>> map = new HashMap<>();
+        int n = tickets.size();
+
+        Map<String, PriorityQueue<String>> adj = new HashMap<>();
 
         for(List<String> it: tickets){
-            map.putIfAbsent(it.get(0), new PriorityQueue<>());
-            map.get(it.get(0)).offer(it.get(1));
+            String from = it.get(0);
+            String to = it.get(1);
+            adj.putIfAbsent(from, new PriorityQueue<>());
+            adj.get(from).offer(to);
         }
 
-        dfs("JFK", map,ans);
+        List<String> ans = new ArrayList<>();
+
+        dfs("JFK", adj,ans);
 
         return ans;
     }
 }
-
