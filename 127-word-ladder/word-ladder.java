@@ -3,7 +3,7 @@ class Solution {
         Queue<Pair<String,Integer>> q = new ArrayDeque<>();
         Set<String> set = new HashSet<>(wordList);
 
-        q.offer(new Pair<String,Integer>(beginWord,1));
+        q.offer(new Pair(beginWord,1));
         while(!q.isEmpty()){
             int n = q.size();
 
@@ -21,7 +21,7 @@ class Solution {
                         String s = new String(currWordArr);
                         if(set.contains(s)){
                             set.remove(s);
-                            q.offer(new Pair<String,Integer>(s,count+1));
+                            q.offer(new Pair(s,count+1));
                         }
                     }
                     currWordArr[k] = curChar;
