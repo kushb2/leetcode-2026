@@ -1,63 +1,69 @@
 class Solution {
     public String alienOrder(String[] words) {
-        // create the adj list for each char to come into the disc , which char need to peocess first
-        Map<Character, Set<Character>> adj = new HashMap<>(); 
-        Map<Character, Integer> inDegree = new HashMap<>();
-        
-        for(String word : words){ // fill all inDegree with 0 In Degree
-            char[] arr = word.toCharArray();
-            for(int i=0;i<arr.length;i++){
-                adj.putIfAbsent(arr[i], new HashSet<>());
-                inDegree.putIfAbsent(arr[i], 0);
-            }
+        int n = words.length;
+        Map<Character, Integer> map = new HashMap<>(); // inDegree for each key 
+        Map<Character, List<Character>> adj = new HashMap<>();
+        Set<Character> set = new HashSet<>();
+        for(String it: words){
+            for(char c : it.toCharArray())
+                set.add(c);
         }
 
-        for(int i=0;i< words.length-1;i++){
-            String w1 = words[i];
-            String w2 = words[i+1];
+        for(char it: set){
+            map.put(it, 0);
+            adj.put(it, new ArrayList<>());
+        }
 
-            if(w1.length() > w2.length() && w1.startsWith(w2)){
-                return "";
-            }
 
-            int minLen = Math.min(w1.length(), w2.length());
+        for(int k=0;k<n-1;k++){
 
-            for(int j=0;j<minLen;j++){
-                char from = w1.charAt(j);
-                char to = w2.charAt(j);
+            String one = words[k];
+            String two = words[k+1];
 
-                if(from != to){
-                    if(!adj.get(from).contains(to)){
-                        adj.get(from).add(to);
-                        inDegree.put(to, inDegree.get(to)+1);
-                    }
+            int i = 0, j = 0;
+
+            while(i< one.length() && j < two.length()){
+                char a = one.charAt(i);
+                char b = two.charAt(j);
+
+                if( a != b){
+                    adj.get(a).add(b);
+                    map.put(b, map.get(b)+1);
                     break;
                 }
+                i++; j++;
+            }
+
+            if(j == two.length() && i == one.length()-1) {
+                return "";
             }
         }
 
         Queue<Character> q = new ArrayDeque<>();
-        for(var it : inDegree.entrySet()){ // process all key where in Degree is no depdency should come first 
+        for(var it: map.entrySet()){
             if(it.getValue() == 0){
-                q.offer(it.getKey());
+                q.add(it.getKey());
             }
         }
-
         StringBuilder sb = new StringBuilder();
         while(!q.isEmpty()){
-            char c = q.poll();
-            sb.append(c);
+            char a = q.poll();
+            sb.append(a);
 
-            for(char it: adj.get(c)){ // get all depdency and decrese there depdency 
-                inDegree.put(it, inDegree.get(it) - 1);
-                if(inDegree.get(it) == 0){ // which become indepdnet add them to the queue 
+            for(char it : adj.get(a)){
+
+                map.put(it, map.get(it) - 1);
+
+                if(map.get(it) == 0){
                     q.offer(it);
                 }
+
             }
-            
+
         }
 
-        return sb.length() == inDegree.size() ? new String(sb) : "";
+        return sb.length() == set.size() ? new String(sb) : "";
+
 
         
     }
