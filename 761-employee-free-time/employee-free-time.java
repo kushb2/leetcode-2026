@@ -15,30 +15,26 @@ class Interval {
 
 class Solution {
     public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
-        List<Interval> intervals = new ArrayList<>();
+        PriorityQueue<Interval> pq = new PriorityQueue<>((a,b) -> a.start - b.start);
 
-        // flat all intervals
+
+        // flat all intervals and put into prority queue
         for(List<Interval> x: schedule){
             for(Interval y : x){
-                intervals.add(y);
+                pq.offer(y);
             }
         }
 
-        intervals.sort((a,b) -> Integer.compare(a.start, b.start)); 
-        int n = intervals.size();
-
-
         // merge them 
-        Interval prevInterval = intervals.get(0);
-
         ArrayList<Interval> nonOverlappingInterval = new ArrayList<>();
-
-        for(int i=1;i<n;i++){
-            if(prevInterval.end >= intervals.get(i).start){
-                prevInterval.end = Math.max(prevInterval.end, intervals.get(i).end);
+        Interval prevInterval = pq.poll();
+        while(!pq.isEmpty()){
+            Interval curr = pq.poll();
+            if(prevInterval.end >= curr.start){
+                prevInterval.end = Math.max(prevInterval.end, curr.end);
             }else{
                 nonOverlappingInterval.add(prevInterval);
-                prevInterval = intervals.get(i);
+                prevInterval = curr;
             }
         }
         nonOverlappingInterval.add(prevInterval);
