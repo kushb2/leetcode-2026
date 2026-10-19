@@ -1,19 +1,16 @@
 class Solution {
+    int INF = (int)1e9;
     public int solve(String s1, String s2, int i, int j,int[][] dp){
-        if(j == s2.length()){ // i find the s2 and i check till ith index 
-            return i; // ending index right 
-        }
-        if(i == s1.length()){ // s1 finish and still s2 subsequence is not completed 
-            return -1;
-        }
+        if(j == s2.length()) return 0;
+        if(i == s1.length()) return INF;
+        
         if(dp[i][j] != -2) return dp[i][j];
 
         if(s1.charAt(i) == s2.charAt(j)){
-            return dp[i][j] = solve(s1, s2, i+1, j+1,dp);
+            return dp[i][j] = 1 + solve(s1, s2, i+1, j+1,dp);
         }else{
-            return dp[i][j] = solve(s1, s2, i+1, j,dp);
+            return dp[i][j] = 1 + solve(s1, s2, i+1, j,dp);
         }
-
 
     }
     public String minWindow(String s1, String s2) {
@@ -28,12 +25,12 @@ class Solution {
 
             if(s1.charAt(left) != s2.charAt(0)) continue;
 
-            int right = solve(s1,s2, left, 0, dp);
+            int len = solve(s1,s2, left, 0, dp);
 
-            if(right != -1){
-                if(minLen > right - left + 1){
-                    minLen = right - left + 1;
-                    ans = s1.substring(left, right);
+            if(len < INF){
+                if(minLen > len){
+                    minLen = len;
+                    ans = s1.substring(left, left + len);
                 }
             }
         }
