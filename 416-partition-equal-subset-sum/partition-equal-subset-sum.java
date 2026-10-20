@@ -1,50 +1,33 @@
 class Solution {
-
-    public int solve(int[] nums,int targetSum, int n,int[][] dp){
-    if(targetSum == 0){
-        return 1;
-    }
+    public boolean solve(int[] nums, int idx, int desiredSum,Map<String, Boolean> dp){
+        if(desiredSum == 0) return true;
+        if(desiredSum < 0) return false;
+        if(idx < 0) return false;
         
-    if(n < 0) return 0;
 
-    if(dp[n][targetSum] != -1) return dp[n][targetSum];
+        String key = Integer.toString(idx) + "#" + Integer.toString(desiredSum);
+        if(dp.containsKey(key)) return dp.get(key);
 
-    int pick = nums[n] > targetSum ? 0 : solve(nums, targetSum - nums[n], n-1,dp);
-    int skip = solve(nums, targetSum, n-1,dp);
-
-    return dp[n][targetSum] = ((pick==1) || (skip==1)) ? 1 : 0;
-
+        if(solve(nums, idx-1, desiredSum - nums[idx],dp)){
+            dp.put(key, true);
+            return true;
+        }
+        if(solve(nums, idx-1, desiredSum,dp)){
+            dp.put(key, true);
+            return true;
+        }
+        dp.put(key, false);
+        return false;
     }
-
 
     public boolean canPartition(int[] nums) {
-        int sum = 0;
-        for(int it: nums){
-            sum += it;
-        }
-        if(sum % 2 != 0) return false;
+        int totalSum = 0;
+        for(int it: nums) totalSum +=it;
 
-        boolean[][] dp = new boolean[nums.length][sum/2+1]; // index to sum 
-        for(boolean[] it: dp) Arrays.fill(it, false);
-        int n = nums.length;
+        if(totalSum % 2 != 0) return false;
+        Map<String, Boolean> dp = new HashMap<>();
 
-        for(int i=0;i<n;i++){
-            dp[i][0] = true; // to make sum 0 is always possible 
-        }
-
-        for(int i=1;i<n;i++){
-            for(int j=1;j<=sum/2;j++){
-
-                boolean take = false;
-                if(j >= nums[i]){
-                    take = dp[i-1][j - nums[i]];
-                }
-                boolean skip = dp[i-1][j];
-                dp[i][j] = take || skip;
-            }
-        }
-
-        return dp[n-1][sum/2];
-
+        return solve(nums, nums.length-1,totalSum/2,dp);
+        
     }
 }
