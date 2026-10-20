@@ -1,40 +1,32 @@
 class Solution {
-    public boolean validSubString(Map<Character, Integer> map1, Map<Character, Integer>  map2){
-        for(var it: map2.entrySet()){
-            if(!map1.containsKey(it.getKey())) return false;
-            if(map1.get(it.getKey()) < it.getValue()) return false;
+    public boolean isEqual(Map<Character, Integer> sMap, Map<Character, Integer> tMap){
+        for(var it: tMap.entrySet()){
+            if(!sMap.containsKey(it.getKey()) || sMap.get(it.getKey()) < it.getValue()) return false;
         }
         return true;
     }
     public String minWindow(String s, String t) {
-        if(s.length() < t.length()) return "";
-        Map<Character, Integer> map1, map2; // char and freq
-        map1 = new HashMap<>(); map2 = new HashMap<>();
-        for(int i=0;i<t.length();i++){
-            map2.put(t.charAt(i), map2.getOrDefault(t.charAt(i), 0) + 1);
-        }
+        int n = s.length(), m = t.length(), left = 0, minLen = Integer.MAX_VALUE;
+        String ans = "";
+        Map<Character, Integer> tMap = new HashMap<>();
+        for(char c: t.toCharArray()) tMap.put(c, tMap.getOrDefault(c, 0)+1);
+        Map<Character, Integer> sMap = new HashMap<>();
 
-        int left = 0, ans = Integer.MAX_VALUE, minLeft = 0, minRight = 0;
-        for(int right=0;right<s.length();right++){
+        for(int right=0;right<n;right++){
             char c = s.charAt(right);
-            map1.put(c, map1.getOrDefault(c, 0) + 1);
+            sMap.put(c, sMap.getOrDefault(c, 0)+1);
 
-
-
-            while(validSubString(map1, map2)){
-                if(ans > right-left+1){
-                    ans = Math.min(ans, right-left+1);
-                    minLeft = left;
-                    minRight = right;
+            while(isEqual(sMap, tMap)){
+                if(minLen > right-left+1){
+                    minLen = right-left+1;
+                    ans = s.substring(left, right+1);
                 }
-                map1.put(s.charAt(left), map1.get(s.charAt(left)) - 1);
+                char leftChar = s.charAt(left);
+                sMap.put(leftChar, sMap.get(leftChar)-1);
                 left++;
             }
-
         }
-
-        return ans == Integer.MAX_VALUE ? "" : s.substring(minLeft, minRight+1);
-    
+        return ans;
 
     }
 }
