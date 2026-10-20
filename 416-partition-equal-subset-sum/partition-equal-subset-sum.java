@@ -1,23 +1,22 @@
 class Solution {
-    public boolean solve(int[] nums, int idx, int desiredSum,Map<String, Boolean> dp){
-        if(desiredSum == 0) return true;
-        if(desiredSum < 0) return false;
-        if(idx < 0) return false;
+    public int solve(int[] nums, int idx, int desiredSum,int[][] dp){
+        if(desiredSum == 0) return 1;
+        if(desiredSum < 0) return 0;
+        if(idx < 0) return 0;
         
 
-        String key = Integer.toString(idx) + "#" + Integer.toString(desiredSum);
-        if(dp.containsKey(key)) return dp.get(key);
+        if(dp[idx][desiredSum] != -1 ) return dp[idx][desiredSum];
 
-        if(solve(nums, idx-1, desiredSum - nums[idx],dp)){
-            dp.put(key, true);
-            return true;
+        if(solve(nums, idx-1, desiredSum - nums[idx],dp) == 1){
+            dp[idx][desiredSum] = 1;
+            return 1;
         }
-        if(solve(nums, idx-1, desiredSum,dp)){
-            dp.put(key, true);
-            return true;
+        if(solve(nums, idx-1, desiredSum,dp) == 1){
+            dp[idx][desiredSum] = 1;
+            return 1;
         }
-        dp.put(key, false);
-        return false;
+        dp[idx][desiredSum] = 0;
+        return 0;
     }
 
     public boolean canPartition(int[] nums) {
@@ -25,9 +24,10 @@ class Solution {
         for(int it: nums) totalSum +=it;
 
         if(totalSum % 2 != 0) return false;
-        Map<String, Boolean> dp = new HashMap<>();
+        int[][] dp = new int[nums.length][totalSum/2+1];
+        for(int[] it: dp) Arrays.fill(it, -1);
 
-        return solve(nums, nums.length-1,totalSum/2,dp);
+        return solve(nums, nums.length-1,totalSum/2,dp) == 0 ? false : true;
         
     }
 }
